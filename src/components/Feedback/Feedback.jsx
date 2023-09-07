@@ -1,6 +1,9 @@
 import { Component } from 'react';
 import { FeedbackStyle } from './Feedback.styled';
 import { FeedbackOptions } from './FeedbackOptions/FeedbackOptions';
+import { Statistics } from './Statistics/Statistics';
+import { NotificationMassage } from './NotificationMassage/NotificationMassage';
+import { Section } from './Section/Section';
 
 class Feedback extends Component {
   state = {
@@ -29,24 +32,28 @@ class Feedback extends Component {
       neutral,
       bad,
     });
-
     return (
       <FeedbackStyle>
-        <h2>Please leave your feedback</h2>
-        <div>
+        <Section title={'Please leave your feedback'} />
+        <Section>
           <FeedbackOptions
             options={options}
             onChooseFeedback={this.onLeaveFeedback}
           />
-        </div>
-        <p>Statistics</p>
-        <ul>
-          <li>Good: {good}</li>
-          <li>Neutral: {neutral}</li>
-          <li>Bad: {bad}</li>
-          <li>Total: {totalFeedback}</li>
-          <li>Positive feedback: {positiveFeedbackPercentage}%</li>
-        </ul>
+        </Section>
+        <Section title={'Statistics'}>
+          {good > 0 || neutral > 0 || bad > 0 ? (
+            <Statistics
+              good={good}
+              neutral={neutral}
+              bad={bad}
+              total={totalFeedback}
+              positivePercentage={positiveFeedbackPercentage}
+            />
+          ) : (
+            <NotificationMassage message={'There is no feedback'} />
+          )}
+        </Section>
       </FeedbackStyle>
     );
   }
